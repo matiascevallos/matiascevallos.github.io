@@ -1,0 +1,188 @@
+/* General page styles */
+body {
+    background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+    font-family: 'Montserrat', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#page-wrapper {
+    max-width: 700px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(60, 60, 120, 0.12);
+    padding: 32px 24px;
+}
+
+/* Banner styles */
+#banner .inner {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+#banner h1 {
+    font-size: 2.2em;
+    color: #4f46e5;
+    margin-bottom: 0.5em;
+}
+
+#banner h2 {
+    font-size: 1.3em;
+    color: #64748b;
+    margin-bottom: 0.5em;
+}
+
+#banner p {
+    color: #334155;
+    font-size: 1em;
+    margin-bottom: 1em;
+}
+
+#viewAll {
+    background: #e0e7ff;
+    color: #4f46e5;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: background 0.2s;
+}
+#viewAll:hover {
+    background: #c7d2fe;
+}
+
+/* Game section styles */
+#game .inner {
+    background: #f1f5f9;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+#game h2 {
+    color: #4f46e5;
+    margin-bottom: 0.5em;
+}
+
+#game p, #game ul {
+    color: #334155;
+    font-size: 1em;
+    margin-bottom: 1em;
+}
+
+#game input[type="text"] {
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 1em;
+    margin: 0 6px 0 0;
+    background: #fff;
+    transition: border 0.2s;
+}
+#game input[type="text"]:focus {
+    border-color: #4f46e5;
+    outline: none;
+}
+
+/* Buttons */
+#game button,
+#game .inner button {
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 1em;
+    cursor: pointer;
+    margin: 6px 0;
+    transition: background 0.2s;
+}
+#game button:hover,
+#game .inner button:hover {
+    background: #4338ca;
+}
+
+/* Previous answers list */
+#previousAnswers {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1em;
+}
+#previousAnswers h1 {
+    font-size: 1.1em;
+    color: #6366f1;
+    margin-bottom: 0.5em;
+}
+#previousAnswers p {
+    background: #e0e7ff;
+    color: #4f46e5;
+    border-radius: 6px;
+    padding: 6px 10px;
+    margin-bottom: 4px;
+    display: inline-block;
+}
+
+/* Wordle grid styles */
+#wordle {
+    margin: 24px auto;
+    border-collapse: separate;
+    border-spacing: 8px;
+}
+#wordle td {
+    padding: 0;
+}
+#wordle input[type="text"] {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: bold;
+    background: #e0e7ff;
+    border: 2px solid #6366f1;
+    border-radius: 8px;
+    margin: 0;
+    transition: background 0.2s, border 0.2s;
+}
+#wordle input[type="text"]:disabled {
+    background: #cbd5e1;
+    color: #64748b;
+    border-color: #cbd5e1;
+}
+
+/* Correct/incorrect colors for Wordle */
+#wordle input[type="text"].correct {
+    background: #4ade80 !important; /* green */
+    border-color: #22c55e !important;
+    color: #065f46 !important;
+}
+#wordle input[type="text"].incorrect {
+    background: #fca5a5 !important; /* red */
+    border-color: #ef4444 !important;
+    color: #991b1b !important;
+}
+
+/*Layout for buttons so they are not stuck to each other*/
+.button-row {
+    display: flex;
+    gap: 16px;
+    margin-top: 18px;
+    justify-content: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    #page-wrapper {
+        padding: 12px 4px;
+    }
+    #banner h1 {
+        font-size: 1.3em;
+    }
+    #wordle input[type="text"] {
+        width: 28px;
+        height: 28px;
+        font-size: 1em;
+    }
+}

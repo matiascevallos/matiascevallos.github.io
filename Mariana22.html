@@ -1,0 +1,221 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Mariana22</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="assets/css/game.css" />
+        <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    </head>
+    <body class="is-preload">
+        <div id="page-wrapper">
+            <section id="banner">
+                <div class="inner">
+                    <h1>Bienvenida a tu primer regalo de cumpleaños</h1>
+                    <button id="viewAll">Revelar todos los regalos (no presionar)</button>
+                    <h2>Como funciona?</h2>
+                    <p>Todos los días vas a poder jugar un juego. Cada juego te dará la oportunidad de identificar una pista de un regalo especial. ¡Diviértete y buena suerte!</p>
+                </div>
+            </section>
+            <section id="game">
+                <div class="inner">
+                    <h2>Juego del Día</h2>
+                    <p>Aquí es donde se jugará el juego del día. ¡Buena suerte!</p>
+                    <p>Si ya jugaste antes, puedes ver tus respuestas anteriores</p>
+                    <p>Ingresa primero la respuesta anterior: <input type="text" id="lastAnswer" /></p>
+                    <button id="viewPreviousAnswers">Ver</button>
+                    <button id="showGame">Empezar a jugar</button>
+                    <ul id="previousAnswers">
+                    </ul>
+                    <p>Ya sabes cual es el regalo? <input type="text" id="giftGuess"/></p>
+                    <button id="checkGift">Probar</button>
+                </div>
+                <table id="wordle"> 
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </body>
+</html>
+<script>
+    let gift = "jonas brothers greetings from your hometown";
+    let answers = ["your", "from", "greetings", "hometown", "brothers", "jonas"];
+    let wordToGuessIdx=0;
+
+    function clearGameArea(){
+        document.querySelector("#game .inner").innerHTML="";
+        document.querySelector("#wordle tbody").innerHTML="";
+    }
+    function renderPreviousAnswers(lastAnswer){
+        console.log(answers, lastAnswer);
+        console.log("check answer", answers.indexOf(lastAnswer));
+        const previousAnswersTitle=document.createElement("h1");
+        previousAnswersTitle.textContent="Aqui estan todas tus anteriores respuestas, juntalas para descubrir tu regalo.";
+        const previousAnswerList = document.querySelector("#previousAnswers");
+        previousAnswerList.innerHTML = "";
+        previousAnswerList.appendChild(previousAnswersTitle);
+        if(answers.indexOf(lastAnswer)!=-1){
+            wordToGuessIdx=answers.indexOf(lastAnswer)+1;
+            for(let i=0; i<wordToGuessIdx; i++){
+                const prevGuesses = document.createElement("p");
+                prevGuesses.textContent = answers[i];
+                previousAnswerList.appendChild(prevGuesses);
+            }
+        }else{
+            const prevGuesses = document.createElement("p");
+            prevGuesses.textContent = "No haz descubierto otras palabras, pero no pasa nada, puedes jugar hoy y descubrir una!";
+            previousAnswerList.appendChild(prevGuesses);
+        }
+        
+    };
+    function renderSubmitButton() {
+        let buttonRow = document.getElementById("buttonRow");
+        if (!buttonRow) {
+            buttonRow = document.createElement("div");
+            buttonRow.id = "buttonRow";
+            buttonRow.className = "button-row";
+            document.querySelector("#game .inner").appendChild(buttonRow);
+        }
+        // Remove existing button if present
+        const oldButton = document.getElementById("submitRow");
+        if (oldButton) oldButton.remove();
+
+        const submitButton = document.createElement("button");
+        submitButton.id = "submitRow";
+        submitButton.textContent = "Probar palabra";
+        buttonRow.appendChild(submitButton);
+    }
+
+    function renderBackButton() {
+        let buttonRow = document.getElementById("buttonRow");
+        if (!buttonRow) {
+            buttonRow = document.createElement("div");
+            buttonRow.id = "buttonRow";
+            buttonRow.className = "button-row";
+            document.querySelector("#game .inner").appendChild(buttonRow);
+        }
+        // Remove existing button if present
+        const oldButton = document.getElementById("backButton");
+        if (oldButton) oldButton.remove();
+
+        const backButton = document.createElement("button");
+        backButton.id = "backButton";
+        backButton.textContent = "Ir a la pagina principal";
+        buttonRow.appendChild(backButton);
+    }
+    //games to be rendered
+    function renderScavengerHunt() {
+        //Logic for scavenger hunt
+        console.log("Iniciando la búsqueda del tesoro...");
+        gameTitle.innerText = "Scavenger Hunt";
+        document.querySelector("#game .inner").appendChild(gameTitle);
+        console.log("Pregunta: ¿Dónde se encuentra el regalo?");
+        console.log("lastAnswer", lastAnswer);
+        const question = "¿Dónde se encuentra el regalo?"; // get the question from the game
+        const hint = "Busca en la habitación donde guardas tus juguetes."; //get hint from the game
+        const questionElement = document.createElement("h2");
+        questionElement.id = "question";
+        questionElement.innerText = question;
+        document.querySelector("#game .inner").appendChild(questionElement);
+        const hintButton = document.createElement("button");
+        hintButton.id = "getHint";
+        hintButton.innerText = "Mostrar pista";
+        document.querySelector("#game .inner").appendChild(hintButton);
+        const hintText = document.createElement("p");
+        hintText.innerText = hint;
+        document.getElementById("getHint").addEventListener("click", () => {
+            document.querySelector("#game .inner").appendChild(hintText);
+        });
+    };
+    function renderWordle (wordToGuess) {
+        renderSubmitButton();
+        renderBackButton();
+        const gridRow = 5;
+        const gridCol = wordToGuess.length;
+        let currRow = 0;
+        const tbody = document.querySelector("#wordle tbody");
+        for(let r=0; r<gridRow; r++){
+            const tr = document.createElement("tr");
+            for(let c=0; c<gridCol; c++){
+                const td = document.createElement("td");
+                const input = document.createElement("input");
+                input.type="text";
+                input.maxLength=1;
+                input.size=1;
+                input.disabled = r!==0;
+                input.dataset.row=r;
+                input.dataset.col=c;
+                td.appendChild(input);
+                tr.appendChild(td);
+            }
+            tbody.appendChild(tr);
+        }
+        document.getElementById("submitRow").addEventListener("click", () => {
+            console.log("submit clicked");
+            for(let c=0; c<gridCol; c++){
+                const input = document.querySelector(`input[data-row="${currRow}"][data-col="${c}"]`)
+                console.log(input.value.trim().toLowerCase(), wordToGuess[c]);
+                if(input.value.trim().toLowerCase() == wordToGuess[c]){
+                    console.log("inside");
+                    input.style.backgroundColor="green";
+                }else{
+                    input.style.backgroundColor="red";
+                }
+                input.disabled=true;
+            }
+            currRow++;
+            if(currRow<gridRow){
+                for(let c=0; c<gridCol; c++){
+                    document.querySelector(`input[data-row="${currRow}"][data-col="${c}"]`).disabled=false;
+                }
+            }
+        });
+    };
+    function renderConnections () {
+
+    };
+    function rednerCrossword(){
+
+    };
+
+    document.getElementById("showGame").addEventListener("click", () => {
+        const today = new Date().toISOString().slice(0, 10);
+        const lastPlayed = localStorage.getItem("lastPlayedDate");
+        if (lastPlayed === today) {
+            alert("Ya jugaste hoy. Vuelve mañana para el siguiente juego o para volver a intentarlo.");
+            return;
+        }
+        localStorage.setItem("lastPlayedDate", today);
+        clearGameArea();
+        renderWordle(answers[wordToGuessIdx]);
+    });
+    document.getElementById("viewPreviousAnswers").addEventListener("click", () => {
+        renderPreviousAnswers(document.getElementById("lastAnswer").value);
+    });
+    document.getElementById("viewAll").addEventListener("click", () => {
+        const today = new Date().toISOString().slice(0, 10);
+        alert("Todos los juegos estan bloqueados por hoy, no seas tramposa!");
+        localStorage.setItem("lastPlayedDate", today);
+    });
+    document.getElementById("checkGift").addEventListener("click", () => {
+        const today = new Date().toISOString().slice(0, 10);
+        const lastPlayed = localStorage.getItem("lastPlayedDate");
+        if (lastPlayed === today) {
+            alert("Ya jugaste hoy. Vuelve mañana para el siguiente juego o para volver a intentarlo.");
+            return;
+        }
+        localStorage.setItem("lastPlayedDate", today);
+        const giftGuess = document.getElementById("giftGuess").value.trim().toLowerCase();
+        if (giftGuess === gift.toLowerCase()) {
+            alert("¡Felicitaciones!");
+        } else {
+            const today = new Date().toISOString().slice(0, 10);
+            alert("Intenta de nuevo de nuevo mañana, solo tienes un intento por dia. Ya no puedes jugar mas por hoy.");
+            localStorage.setItem("lastPlayedDate", today);
+        }
+    });
+    //localStorage.removeItem("lastPlayedDate");
+
+</script>
