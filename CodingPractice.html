@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Frontend Interview Practice Lab</title>
+  <style>
+    /* --- CSS BASICS --- */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.4;
+    }
+    header, footer {
+      background: #0050FF;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+    main {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    /* Flexbox */
+    nav ul {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      padding: 0;
+      list-style: none;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+    }
+
+    /* Grid */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 20px 0;
+    }
+    .card {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      transition: transform 0.3s;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    /* Form styling */
+    form {
+      margin: 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    label { font-weight: bold; }
+    input, button { padding: 8px; }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 6px;
+      text-align: left;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      header, footer { font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Frontend Practice Lab</h1>
+    <nav>
+      <ul>
+        <li><a href="#">Form</a></li>
+        <li><a href="#">Cards</a></li>
+        <li><a href="#">Table</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Semantic Section -->
+    <section>
+      <h2>Form Example</h2>
+      <form id="user-form">
+        <label for="name">Name:</label>
+        <input id="name" type="text" required>
+
+        <label for="email">Email:</label>
+        <input id="email" type="email" required>
+
+        <button type="submit">Submit</button>
+      </form>
+      <p id="form-output"></p>
+    </section>
+
+    <!-- Grid cards -->
+    <section>
+      <h2>Card Grid (CSS Grid)</h2>
+      <div class="card-grid">
+        <div class="card">Card 1</div>
+        <div class="card">Card 2</div>
+        <div class="card">Card 3</div>
+      </div>
+    </section>
+
+    <!-- Table -->
+    <section>
+      <h2>Users (Fetched via API)</h2>
+      <table id="user-table">
+        <thead>
+          <tr><th>Name</th><th>Email</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Practice Lab</p>
+  </footer>
+
+  <script>
+    // --- JS BASICS ---
+    // Form handling (DOM events)
+    const form = document.getElementById("user-form");
+    const output = document.getElementById("form-output");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      output.textContent = `Hello ${name}! We will contact you at ${email}.`;
+    });
+
+    // Fetch data from API and render into table
+    const tableBody = document.querySelector("#user-table tbody");
+    const API_URL = "https://jsonplaceholder.typicode.com/users";
+
+    async function fetchUsers() {
+      const res = await fetch(API_URL);
+      return res.json();
+    }
+
+    function renderUsers(users) {
+      tableBody.innerHTML = users.map(u =>
+        `<tr><td>${u.name}</td><td>${u.email}</td></tr>`
+      ).join("");
+    }
+
+    // Example of Promise.all with fetch
+    Promise.all([fetchUsers(), fetchUsers()])
+      .then(([users1, users2]) => {
+        // Just render the first
+        renderUsers(users1.slice(0, 5));
+        console.log("Fetched twice for demo:", users1.length, users2.length);
+      })
+      .catch(err => console.error("Error fetching users", err));
+
+    // Array method practice
+    const nums = [1, 2, 3, 4, 5];
+    const doubled = nums.map(n => n * 2);
+    console.log("Doubled array:", doubled);
+  </script>
+</body>
+</html>

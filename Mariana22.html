@@ -156,12 +156,13 @@
             console.log("submit clicked");
             for(let c=0; c<gridCol; c++){
                 const input = document.querySelector(`input[data-row="${currRow}"][data-col="${c}"]`)
-                console.log(input.value.trim().toLowerCase(), wordToGuess[c]);
-                if(input.value.trim().toLowerCase() == wordToGuess[c]){
-                    console.log("inside");
-                    input.style.backgroundColor="green";
-                }else{
-                    input.style.backgroundColor="red";
+                const val = input.value.trim().toLowerCase();
+                if(val === wordToGuess[c]){
+                    input.style.backgroundColor = "green";
+                } else if(wordToGuess.includes(val) && wordToGuess.indexOf(val) !== c) {
+                    input.style.backgroundColor = "orange";
+                } else {
+                    input.style.backgroundColor = "red";
                 }
                 input.disabled=true;
             }
