@@ -208,9 +208,11 @@
             return;
         }
         localStorage.setItem("lastPlayedDate", today);
-        const giftGuess = document.getElementById("giftGuess").value.trim().toLowerCase();
-        if (giftGuess === gift.toLowerCase()) {
-            alert("¡Felicitaciones!");
+        let giftGuess = document.getElementById("giftGuess").value;
+        // Normalize: remove spaces and lowercase
+        const normalized = giftGuess.replace(/\s+/g, '').toLowerCase();
+        if (normalized.includes('jonas') && normalized.includes('brothers')) {
+            alert("¡Felicitaciones, empieza a decidir tu outfit y aprender sus canciones!");
         } else {
             const today = new Date().toISOString().slice(0, 10);
             alert("Intenta de nuevo de nuevo mañana, solo tienes un intento por dia. Ya no puedes jugar mas por hoy.");
