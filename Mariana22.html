@@ -40,6 +40,170 @@
     </body>
 </html>
 <script>
+// Connections Game Data for KODAK
+const connectionsGame = {
+    title: "Connections Puzzle",
+    solutionPhrase: "KODAK",
+    categories: [
+        { name: "Keys", words: ["Piano", "Lock", "Keyboard", "Treasure"] },
+        { name: "Optic", words: ["Eyes", "Prism", "Glasses", "Telescope"] },
+        { name: "Darkroom", words: ["Developer", "Negative", "Enlarger", "Chemical"] },
+        { name: "Appear", words: ["Vanish", "Reveal", "Stage", "Illusion"] },
+        { name: "Kolors", words: ["Gold", "Magenta", "Silver", "Black"] }
+    ]
+};
+
+function renderConnectionsGame() {
+    clearGameArea();
+    const gameDiv = document.createElement("div");
+    gameDiv.id = "connections-game";
+    const title = document.createElement("h2");
+    title.textContent = connectionsGame.title;
+    gameDiv.appendChild(title);
+
+    // Flatten and shuffle words
+    let allWords = connectionsGame.categories.flatMap(cat => cat.words);
+    allWords = allWords.sort(() => Math.random() - 0.5);
+
+    // Track state
+    let selected = [];
+    let foundGroups = [];
+    let lockedWords = new Set();
+
+    // Grid
+    const grid = document.createElement("div");
+    grid.className = "connections-grid";
+    grid.style.display = "grid";
+    grid.style.gridTemplateColumns = "repeat(4, 1fr)";
+    grid.style.gap = "10px";
+
+    // Word tiles
+    allWords.forEach(word => {
+        const tile = document.createElement("button");
+        tile.className = "connections-tile";
+        tile.textContent = word;
+        tile.style.padding = "16px";
+        tile.style.fontSize = "1.1em";
+        tile.style.cursor = "pointer";
+        tile.style.transition = "all 0.2s";
+        tile.onclick = () => {
+            if (lockedWords.has(word)) return;
+            if (selected.includes(word)) {
+                selected = selected.filter(w => w !== word);
+                tile.style.background = "";
+            } else if (selected.length < 4) {
+                selected.push(word);
+                tile.style.background = "#ffe066";
+            }
+        };
+        grid.appendChild(tile);
+    });
+    gameDiv.appendChild(grid);
+
+    // Track attempts per day
+    const today = new Date().toISOString().slice(0, 10);
+    let attempts = Number(localStorage.getItem("connectionsAttempts" + today)) || 0;
+
+    const submitBtn = document.createElement("button");
+    submitBtn.textContent = "Probar grupo";
+    submitBtn.style.marginTop = "20px";
+    submitBtn.disabled = attempts >= 5;
+
+    function updateAttempts() {
+        attempts++;
+        localStorage.setItem("connectionsAttempts" + today, attempts);
+        if (attempts >= 5) {
+            submitBtn.disabled = true;
+            const lockMsg = document.createElement("div");
+            lockMsg.textContent = "Ya usaste tus 5 intentos por hoy. Vuelve mañana.";
+            lockMsg.style.color = "#ff6b6b";
+            lockMsg.style.margin = "10px 0";
+            gameDiv.appendChild(lockMsg);
+        }
+    }
+
+    submitBtn.onclick = () => {
+        if (selected.length !== 4 || submitBtn.disabled) return;
+        // Check group
+        let found = false;
+        for (const cat of connectionsGame.categories) {
+            if (cat.words.every(w => selected.includes(w))) {
+                found = true;
+                foundGroups.push(cat.name);
+                // Lock tiles
+                Array.from(grid.children).forEach(tile => {
+                    if (selected.includes(tile.textContent)) {
+                        tile.style.background = "#b2f2ff";
+                        tile.style.border = "2px solid #228be6";
+                        tile.disabled = true;
+                        lockedWords.add(tile.textContent);
+                    }
+                });
+                // Reveal category
+                const catDiv = document.createElement("div");
+                catDiv.textContent = `Grupo encontrado: ${cat.name}`;
+                catDiv.style.margin = "10px 0";
+                catDiv.style.fontWeight = "bold";
+                catDiv.style.color = "#228be6";
+                gameDiv.appendChild(catDiv);
+                break;
+            }
+        }
+        if (!found) {
+            updateAttempts();
+            // Incorrect: shake selected tiles
+            Array.from(grid.children).forEach(tile => {
+                if (selected.includes(tile.textContent)) {
+                    tile.style.background = "#ff6b6b";
+                    tile.style.animation = "shake 0.3s";
+                    setTimeout(() => {
+                        tile.style.background = "";
+                        tile.style.animation = "";
+                    }, 400);
+                }
+            });
+            // Feedback
+            const feedback = document.createElement("div");
+            feedback.textContent = "No es un grupo válido, intenta de nuevo.";
+            feedback.style.color = "#ff6b6b";
+            feedback.style.margin = "10px 0";
+            gameDiv.appendChild(feedback);
+            setTimeout(() => feedback.remove(), 1200);
+        }
+        selected = [];
+        // Completion
+        if (foundGroups.length === 5) {
+            const reveal = document.createElement("h3");
+            reveal.textContent = `¡Solución: ${connectionsGame.solutionPhrase}!`;
+            reveal.style.color = "#51cf66";
+            reveal.style.fontSize = "2em";
+            reveal.style.marginTop = "20px";
+            gameDiv.appendChild(reveal);
+            // Optional: celebratory animation
+            const confetti = document.createElement("div");
+            confetti.textContent = "🎉";
+            confetti.style.fontSize = "3em";
+            confetti.style.marginTop = "10px";
+            gameDiv.appendChild(confetti);
+        }
+    };
+    gameDiv.appendChild(submitBtn);
+
+    // Progress
+    const progress = document.createElement("div");
+    progress.id = "connections-progress";
+    progress.style.marginTop = "15px";
+    progress.textContent = `Grupos encontrados: 0/5`;
+    gameDiv.appendChild(progress);
+
+    // Update progress on group found
+    const observer = new MutationObserver(() => {
+        progress.textContent = `Grupos encontrados: ${foundGroups.length}/5`;
+    });
+    observer.observe(gameDiv, { childList: true });
+
+    document.querySelector("#game .inner").appendChild(gameDiv);
+}
     let gift = "jonas brothers greetings from your hometown";
     let answers = ["your", "from", "greetings", "hometown", "brothers", "jonas"];
     let wordToGuessIdx=0;
@@ -190,7 +354,7 @@
         }
         localStorage.setItem("lastPlayedDate", today);
         clearGameArea();
-        renderWordle(answers[wordToGuessIdx]);
+        renderConnectionsGame();
     });
     document.getElementById("viewPreviousAnswers").addEventListener("click", () => {
         renderPreviousAnswers(document.getElementById("lastAnswer").value);
