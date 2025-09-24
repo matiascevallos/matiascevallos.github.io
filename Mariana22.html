@@ -40,6 +40,125 @@
     </body>
 </html>
 <script>
+function renderStrands() {
+    clearGameArea();
+    const gridSize = 8;
+    // Fixed grid of letters
+    const letters = [
+        'C','A','R','U','A','E','C','T',
+        'A','N','G','R','L','O','N','A',
+        'R','R','M','E','S','E','V','C',
+        'M','E','M','T','R','I','E','L',
+        'I','R','O','E','L','P','U','A',
+        'A','N','F','N','F','O','Q','R',
+        'F','S','Q','R','Y','A','S','Q',
+        'R','L','V','E','L','U','R','R',
+    ];
+
+    // Track selection
+    let selectedCells = [];
+    let wordFormed = "";
+
+    // Word display
+    const wordDisplay = document.createElement("h3");
+    wordDisplay.textContent = "";
+    wordDisplay.style.marginBottom = "15px";
+    document.querySelector("#game .inner").appendChild(wordDisplay);
+
+    // Confirm button
+    const confirmBtn = document.createElement("button");
+    confirmBtn.textContent = "Confirmar palabra";
+    confirmBtn.style.margin = "10px 0";
+    document.querySelector("#game .inner").appendChild(confirmBtn);
+
+    // Found words display
+    const foundWordsDiv = document.createElement("div");
+    foundWordsDiv.style.marginTop = "20px";
+    document.querySelector("#game .inner").appendChild(foundWordsDiv);
+
+    const targetWords = ["CARRETE", "ANGULO", "MEMORIA", "ENFOQUE", "REVELAR", "ALCANCE"];
+    let foundWords = [];
+
+    function updateFoundWords() {
+        foundWordsDiv.innerHTML = "<strong>Palabras encontradas:</strong> " + foundWords.join(", ") +
+            `<br><strong>Faltan:</strong> ${targetWords.length - foundWords.length}`;
+    }
+    updateFoundWords();
+
+    confirmBtn.onclick = function() {
+        const formed = wordDisplay.textContent.toUpperCase();
+        if (targetWords.includes(formed) && !foundWords.includes(formed)) {
+            foundWords.push(formed);
+            updateFoundWords();
+            const msg = document.createElement("div");
+            msg.textContent = `¡Encontraste la palabra: ${formed}!`;
+            msg.style.color = "#51cf66";
+            msg.style.margin = "10px 0";
+            document.querySelector("#game .inner").appendChild(msg);
+            setTimeout(() => msg.remove(), 2000);
+        } else if (foundWords.includes(formed)) {
+            const msg = document.createElement("div");
+            msg.textContent = `Ya encontraste la palabra: ${formed}.`;
+            msg.style.color = "#fab005";
+            msg.style.margin = "10px 0";
+            document.querySelector("#game .inner").appendChild(msg);
+            setTimeout(() => msg.remove(), 2000);
+        } else {
+            const msg = document.createElement("div");
+            msg.textContent = "No es una palabra válida.";
+            msg.style.color = "#ff6b6b";
+            msg.style.margin = "10px 0";
+            document.querySelector("#game .inner").appendChild(msg);
+            setTimeout(() => msg.remove(), 2000);
+        }
+        // Reset selection
+        wordDisplay.textContent = "";
+        wordFormed = "";
+        selectedCells.forEach(cellId => {
+            const [r, c] = cellId.split(",").map(Number);
+            const td = grid.rows[r].cells[c];
+            td.style.background = "";
+        });
+        selectedCells = [];
+    };
+
+    // Grid
+    const grid = document.createElement("table");
+    grid.className = "strands-grid";
+    grid.style.borderCollapse = "collapse";
+    grid.style.margin = "auto";
+    for (let r = 0; r < gridSize; r++) {
+        const tr = document.createElement("tr");
+        for (let c = 0; c < gridSize; c++) {
+            const td = document.createElement("td");
+            td.textContent = letters[r * gridSize + c];
+            td.style.width = "32px";
+            td.style.height = "32px";
+            td.style.textAlign = "center";
+            td.style.fontSize = "1.2em";
+            td.style.border = "1px solid #ccc";
+            td.style.cursor = "pointer";
+            td.dataset.row = r;
+            td.dataset.col = c;
+            td.onclick = function() {
+                const cellId = r + "," + c;
+                if (selectedCells.includes(cellId)) return; // can't repeat
+                if (selectedCells.length > 0) {
+                    // Must be adjacent to last selected
+                    const [lastR, lastC] = selectedCells[selectedCells.length - 1].split(",").map(Number);
+                    if (Math.abs(lastR - r) > 1 || Math.abs(lastC - c) > 1) return;
+                }
+                selectedCells.push(cellId);
+                td.style.background = "#ffe066";
+                wordFormed += td.textContent;
+                wordDisplay.textContent = wordFormed;
+            };
+            tr.appendChild(td);
+        }
+        grid.appendChild(tr);
+    }
+    document.querySelector("#game .inner").appendChild(grid);
+}
 // Connections Game Data for KODAK
 const connectionsGame = {
     title: "Connections Puzzle",
@@ -52,6 +171,26 @@ const connectionsGame = {
         { name: "Kolors", words: ["Gold", "Magenta", "Silver", "Black"] }
     ]
 };
+
+/*
+    K – Keys (old projector brand, related to cinema/film history)
+    O – Optic (lens science, but not directly “camera”)
+    D – Darkroom (where film is developed)
+    A – Appear (controls light, photography concept)
+    K – Kolors (classic film type, indirect nod to Kodak)
+
+    F – Focal (lens property)
+    I – ISO (film speed setting, less obvious unless you know photography)
+    L – Latent (as in “latent image” before film development)
+    M – Magnesium (used in old flash powder for photography)
+
+    C – Carrete 
+    A – Angulo
+    M – Memoria
+    E – Enfoque
+    R – Revelar
+    A – Alcance
+*/
 
 function renderConnectionsGame() {
     clearGameArea();
@@ -124,6 +263,19 @@ function renderConnectionsGame() {
 
     submitBtn.onclick = () => {
         if (selected.length !== 4 || submitBtn.disabled) return;
+        // Check for 3 of the same group before validating
+        for (const cat of connectionsGame.categories) {
+            const count = selected.filter(w => cat.words.includes(w)).length;
+            if (count === 3) {
+                const oneAwayMsg = document.createElement("div");
+                oneAwayMsg.textContent = "You are one away!";
+                oneAwayMsg.style.color = "#fab005";
+                oneAwayMsg.style.margin = "10px 0";
+                gameDiv.appendChild(oneAwayMsg);
+                setTimeout(() => oneAwayMsg.remove(), 2000);
+                break;
+            }
+        }
         // Check group
         let found = false;
         for (const cat of connectionsGame.categories) {
@@ -205,7 +357,8 @@ function renderConnectionsGame() {
     document.querySelector("#game .inner").appendChild(gameDiv);
 }
     let gift = "jonas brothers greetings from your hometown";
-    let answers = ["your", "from", "greetings", "hometown", "brothers", "jonas"];
+    let answers = ["kodak", "film", "camera"];
+    let lastAnswerInput="";
     let wordToGuessIdx=0;
 
     function clearGameArea(){
@@ -213,8 +366,7 @@ function renderConnectionsGame() {
         document.querySelector("#wordle tbody").innerHTML="";
     }
     function renderPreviousAnswers(lastAnswer){
-        console.log(answers, lastAnswer);
-        console.log("check answer", answers.indexOf(lastAnswer));
+        lastAnswerInput=lastAnswer;
         const previousAnswersTitle=document.createElement("h1");
         previousAnswersTitle.textContent="Aqui estan todas tus anteriores respuestas, juntalas para descubrir tu regalo.";
         const previousAnswerList = document.querySelector("#previousAnswers");
@@ -338,12 +490,6 @@ function renderConnectionsGame() {
             }
         });
     };
-    function renderConnections () {
-
-    };
-    function rednerCrossword(){
-
-    };
 
     document.getElementById("showGame").addEventListener("click", () => {
         const today = new Date().toISOString().slice(0, 10);
@@ -354,7 +500,17 @@ function renderConnectionsGame() {
         }
         localStorage.setItem("lastPlayedDate", today);
         clearGameArea();
-        renderConnectionsGame();
+        let lastAnswer = lastAnswerInput;
+        if (!lastAnswer) {
+            renderConnectionsGame();
+        } else if (lastAnswer === "kodak") {
+            renderWordle("film");
+        } else if (lastAnswer === "film") {
+            renderStrands();
+        } else {
+            // Default: show connections if unknown answer
+            renderConnectionsGame();
+        }
     });
     document.getElementById("viewPreviousAnswers").addEventListener("click", () => {
         renderPreviousAnswers(document.getElementById("lastAnswer").value);
@@ -375,7 +531,7 @@ function renderConnectionsGame() {
         let giftGuess = document.getElementById("giftGuess").value;
         // Normalize: remove spaces and lowercase
         const normalized = giftGuess.replace(/\s+/g, '').toLowerCase();
-        if (normalized.includes('jonas') && normalized.includes('brothers')) {
+        if (normalized.includes('kodak') && normalized.includes('film') && normalized.includes('camera')) {
             alert("¡Felicitaciones, empieza a decidir tu outfit y aprender sus canciones!");
         } else {
             const today = new Date().toISOString().slice(0, 10);
@@ -383,6 +539,6 @@ function renderConnectionsGame() {
             localStorage.setItem("lastPlayedDate", today);
         }
     });
-    //localStorage.removeItem("lastPlayedDate");
+    localStorage.removeItem("lastPlayedDate");
 
 </script>
