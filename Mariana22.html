@@ -45,13 +45,13 @@ function renderStrands() {
     const gridSize = 8;
     // Fixed grid of letters
     const letters = [
-        'C','A','R','U','A','E','C','T',
-        'A','N','G','R','L','O','N','A',
-        'R','R','M','E','S','E','V','C',
-        'M','E','M','T','R','I','E','L',
-        'I','R','O','E','L','P','U','A',
-        'A','N','F','N','F','O','Q','R',
-        'F','S','Q','R','Y','A','S','Q',
+        'E','L','L','U','A','E','C','T',
+        'A','N','A','R','L','O','R','A',
+        'R','R','N','E','S','U','A','C',
+        'M','O','A','N','Y','A','B','L',
+        'I','O','O','E','L','P','N','C',
+        'A','M','F','N','F','O','U','R',
+        'F','M','A','T','E','S','D','Q',
         'R','L','V','E','L','U','R','R',
     ];
 
@@ -76,12 +76,19 @@ function renderStrands() {
     foundWordsDiv.style.marginTop = "20px";
     document.querySelector("#game .inner").appendChild(foundWordsDiv);
 
-    const targetWords = ["CARRETE", "ANGULO", "MEMORIA", "ENFOQUE", "REVELAR", "ALCANCE"];
+    const targetWords = ["ELLA", "ANANYA", "ROOMMATES", "DUNBAR", "UBC"];
     let foundWords = [];
 
     function updateFoundWords() {
         foundWordsDiv.innerHTML = "<strong>Palabras encontradas:</strong> " + foundWords.join(", ") +
             `<br><strong>Faltan:</strong> ${targetWords.length - foundWords.length}`;
+        if (foundWords.length === targetWords.length) {
+            const msg = document.createElement("div");
+            msg.textContent = "¡Has encontrado todas las palabras, preguntale a Ananya tu siguiente letra! 🎉";
+            msg.style.color = "#51cf66";
+            msg.style.margin = "15px 0";
+            foundWordsDiv.appendChild(msg);
+        }
     }
     updateFoundWords();
 
@@ -356,7 +363,7 @@ function renderConnectionsGame() {
     document.querySelector("#game .inner").appendChild(gameDiv);
 }
     let gift = "jonas brothers greetings from your hometown";
-    let answers = ["s", "as", "camera"];
+    let answers = ["s", "p", "r", "u", "e"];
     let lastAnswerInput="";
     let wordToGuessIdx=0;
 
@@ -515,11 +522,15 @@ function renderConnectionsGame() {
             renderWordle("colsa");
         } else if (lastAnswer === "s") {
             renderConnectionsGame();
-        } else if (lastAnswer === "film") {//p Manuela
+        } else if (lastAnswer === "p") {//p Manuela
             renderStrands();
-        }else if (lastAnswer === "film") {//u Familia
-            renderStrands();
-        } else {//roommates
+        } else if (lastAnswer === "t") {//r roommates
+            renderConnectionsGame();
+        } else if (lastAnswer === "u") {//u Familia
+            alert("Preguntaste a todas las personas importantes de tu vida excepto una");
+        } else if (lastAnswer === "e") {//yo le doy el e
+            renderWordle("purse");
+        } else {
             // Default: show connections if unknown answer
             renderWordle("colsa");
         }//yo le doy el e
