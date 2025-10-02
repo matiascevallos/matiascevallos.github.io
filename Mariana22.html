@@ -162,13 +162,12 @@ function renderStrands() {
 // Connections Game Data for KODAK
 const connectionsGame = {
     title: "Connections Puzzle",
-    solutionPhrase: "KODAK",
+    solutionPhrase: "Hood es la mejor casa de todas, pero te toca preguntarle a tu amiga de Rodney la respuesta",
     categories: [
-        { name: "Keys", words: ["Piano", "Lock", "Keyboard", "Treasure"] },
-        { name: "Optic", words: ["Eyes", "Prism", "Glasses", "Telescope"] },
-        { name: "Darkroom", words: ["Developer", "Negative", "Enlarger", "Chemical"] },
-        { name: "Appear", words: ["Vanish", "Reveal", "Stage", "Illusion"] },
-        { name: "Kolors", words: ["Gold", "Magenta", "Silver", "Black"] }
+        { name: "Beatty", words: ["Rhythm", "Music", "Drum", "Tempo"] },
+        { name: "Hood", words: ["Sweater", "Robin", "Head", "Cover"] },
+        { name: "Nelson", words: ["Mandela", "Horatio", "Wrestling", "Hold"] },
+        { name: "Rodney", words: ["Copperbottom", "HMS", "Battleship", "Atlantic"] }
     ]
 };
 
@@ -324,7 +323,7 @@ function renderConnectionsGame() {
         }
         selected = [];
         // Completion
-        if (foundGroups.length === 5) {
+        if (foundGroups.length === connectionsGame.categories.length) {
             const reveal = document.createElement("h3");
             reveal.textContent = `¡Solución: ${connectionsGame.solutionPhrase}!`;
             reveal.style.color = "#51cf66";
@@ -345,19 +344,19 @@ function renderConnectionsGame() {
     const progress = document.createElement("div");
     progress.id = "connections-progress";
     progress.style.marginTop = "15px";
-    progress.textContent = `Grupos encontrados: 0/5`;
+    progress.textContent = `Grupos encontrados: 0/${connectionsGame.categories.length}`;
     gameDiv.appendChild(progress);
 
     // Update progress on group found
     const observer = new MutationObserver(() => {
-        progress.textContent = `Grupos encontrados: ${foundGroups.length}/5`;
+        progress.textContent = `Grupos encontrados: ${foundGroups.length}/${connectionsGame.categories.length}`;
     });
     observer.observe(gameDiv, { childList: true });
 
     document.querySelector("#game .inner").appendChild(gameDiv);
 }
     let gift = "jonas brothers greetings from your hometown";
-    let answers = ["kodak", "film", "camera"];
+    let answers = ["s", "as", "camera"];
     let lastAnswerInput="";
     let wordToGuessIdx=0;
 
@@ -512,16 +511,18 @@ function renderConnectionsGame() {
         localStorage.setItem("lastPlayedDate", today);
         clearGameArea();
         let lastAnswer = lastAnswerInput;
-        if (!lastAnswer) {
+        if (!lastAnswer) {//s
             renderWordle("colsa");
         } else if (lastAnswer === "s") {
             renderConnectionsGame();
-        } else if (lastAnswer === "film") {
+        } else if (lastAnswer === "film") {//p Manuela
             renderStrands();
-        } else {
+        }else if (lastAnswer === "film") {//u Familia
+            renderStrands();
+        } else {//roommates
             // Default: show connections if unknown answer
-            renderConnectionsGame();
-        }
+            renderWordle("colsa");
+        }//yo le doy el e
     });
     document.getElementById("viewPreviousAnswers").addEventListener("click", () => {
         renderPreviousAnswers(document.getElementById("lastAnswer").value);
