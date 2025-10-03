@@ -169,12 +169,12 @@ function renderStrands() {
 // Connections Game Data for KODAK
 const connectionsGame = {
     title: "Connections Puzzle",
-    solutionPhrase: "Hood es la mejor casa de todas, pero te toca preguntarle a tu amiga de Rodney la respuesta",
+    solutionPhrase: "Hora de preguntar a tu familia, preguntale a la persona que comparte mes de cumpleaños contigo!",
     categories: [
-        { name: "Beatty", words: ["Rhythm", "Music", "Drum", "Tempo"] },
-        { name: "Hood", words: ["Sweater", "Robin", "Head", "Cover"] },
-        { name: "Nelson", words: ["Mandela", "Horatio", "Wrestling", "Hold"] },
-        { name: "Rodney", words: ["Copperbottom", "HMS", "Battleship", "Atlantic"] }
+        { name: "Colombia", words: ["Bogota", "Cartagena", "Anapoima", "Sincelejo"] },
+        { name: "Manuel", words: ["Anglo", "Golf", "Clash", "Senior"] },
+        { name: "Ulises", words: ["Doctor", "Pinocho", "Maraton", "Odyssey"] },
+        { name: "Maria Andrea", words: ["Doctora", "Fashion", "Email", "Fav"] }
     ]
 };
 
@@ -524,7 +524,7 @@ function renderConnectionsGame() {
             renderConnectionsGame();
         } else if (lastAnswer === "p") {//p Manuela
             renderStrands();
-        } else if (lastAnswer === "t") {//r roommates
+        } else if (lastAnswer === "r") {//r roommates
             renderConnectionsGame();
         } else if (lastAnswer === "u") {//u Familia
             alert("Preguntaste a todas las personas importantes de tu vida excepto una");
