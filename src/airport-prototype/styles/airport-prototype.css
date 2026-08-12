@@ -1,0 +1,300 @@
+/* Mobile-first styles for Airport Prototype experiment */
+
+.ap-app {
+  display: flex;
+  flex-direction: column;
+  min-height: 60vh;
+  max-width: 100%;
+}
+
+.ap-map-wrap {
+  flex: 1 1 auto;
+  min-height: 45vh;
+  position: relative;
+}
+
+.ap-map {
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+}
+
+.ap-panel {
+  flex: 0 0 auto;
+  padding: 1rem;
+  background: rgba(46, 49, 65, 0.95);
+  color: #eee;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  max-height: 55vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ap-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+}
+
+.ap-title.ap-tracking {
+  color: #4ade80;
+  letter-spacing: 0.05em;
+}
+
+.ap-context {
+  font-size: 0.85rem;
+  color: #a5b4fc;
+  margin: 0 0 0.25rem;
+}
+
+.ap-yvr {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin: 0 0 0.5rem;
+}
+
+.ap-privacy {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border-left: 3px solid #6366f1;
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.ap-card {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0.75rem 0;
+}
+
+.ap-btn {
+  display: inline-block;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.65rem 1rem;
+  margin: 0.25rem 0.25rem 0.25rem 0;
+  border: none;
+  border-radius: 8px;
+  background: #4f46e5;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.ap-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.ap-btn-primary {
+  background: #2563eb;
+}
+
+.ap-btn-large {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+}
+
+.ap-btn-small {
+  min-height: 40px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  background: #475569;
+}
+
+.ap-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+.ap-actions-inline {
+  margin-top: 0.25rem;
+}
+
+.ap-label {
+  display: block;
+  margin: 0.75rem 0;
+}
+
+.ap-label input,
+.ap-label textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.65rem;
+  border: 1px solid #64748b;
+  border-radius: 6px;
+  background: #1e293b;
+  color: #f1f5f9;
+  font-size: 1rem;
+  min-height: 44px;
+  box-sizing: border-box;
+}
+
+.ap-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  margin: 0.75rem 0;
+}
+
+.ap-muted {
+  color: #94a3b8;
+}
+
+.ap-error {
+  color: #fca5a5;
+  background: rgba(220, 38, 38, 0.15);
+  padding: 0.5rem;
+  border-radius: 6px;
+}
+
+.ap-warning {
+  color: #fcd34d;
+  font-weight: 600;
+}
+
+.ap-hint {
+  color: #86efac;
+  font-weight: 600;
+}
+
+.ap-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin: 0.25rem 0;
+}
+
+.ap-badge-active {
+  background: #166534;
+  color: #bbf7d0;
+}
+
+.ap-badge-hidden {
+  background: #991b1b;
+  color: #fecaca;
+}
+
+.ap-gps-good { color: #4ade80; }
+.ap-gps-moderate { color: #facc15; }
+.ap-gps-poor { color: #fb923c; }
+.ap-gps-very-poor { color: #f87171; }
+
+.ap-debug {
+  font-size: 0.7rem;
+  overflow-x: auto;
+  background: #0f172a;
+  padding: 0.5rem;
+  border-radius: 6px;
+  max-height: 200px;
+}
+
+.ap-divider {
+  border: none;
+  border-top: 1px solid #475569;
+  margin: 1rem 0;
+}
+
+.ap-legend {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.ap-legend-route,
+.ap-legend-track {
+  display: inline-block;
+  width: 16px;
+  height: 4px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.ap-legend-route { background: #4f46e5; }
+.ap-legend-track { background: #16a34a; }
+
+.ap-feedback fieldset {
+  border: 1px solid #475569;
+  border-radius: 6px;
+  margin: 0.75rem 0;
+  padding: 0.5rem 0.75rem;
+}
+
+.ap-feedback legend {
+  font-size: 0.85rem;
+  padding: 0 0.25rem;
+}
+
+.ap-feedback label {
+  display: block;
+  min-height: 40px;
+  padding: 0.35rem 0;
+  cursor: pointer;
+}
+
+.ap-feedback input[type="radio"],
+.ap-feedback input[type="checkbox"] {
+  margin-right: 0.5rem;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+
+.ap-token-missing {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: #eee;
+}
+
+.ap-token-missing code {
+  background: #1e293b;
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+}
+
+@media (min-width: 768px) {
+  .ap-app {
+    flex-direction: row;
+    min-height: 70vh;
+  }
+
+  .ap-map-wrap {
+    flex: 1 1 60%;
+    min-height: 500px;
+  }
+
+  .ap-panel {
+    flex: 0 0 380px;
+    max-height: none;
+  }
+
+  .ap-map {
+    min-height: 500px;
+  }
+}
+
+/* Override page wrapper constraints for prototype page */
+body.ap-prototype-page #wrapper .inner.ap-prototype-inner {
+  max-width: 100%;
+  padding: 0;
+}
+
+body.ap-prototype-page #banner {
+  display: none;
+}
+
+body.ap-prototype-page .ap-app {
+  min-height: calc(100vh - 120px);
+}
